@@ -28,8 +28,10 @@ public class City_BuildingsManager : City_Singleton<City_BuildingsManager>, IHan
         }
         //Debug.Log($"{_item.ID} added");
         handler.Add(_item.ID, _item);
+        //Debug.Log(handler.Count + " -- " + nbTotalBuildings);
         if (handler.Count >= nbTotalBuildings)
         {
+            Debug.Log("test");
             OnAllBuildingsAdded?.Invoke();
         }
     }

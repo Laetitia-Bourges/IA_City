@@ -7,18 +7,19 @@ public class City_IAManager : MonoBehaviour
 {
     public event Action OnInstantiateIA = null;
 
-    [SerializeField, Range(0, 100)] int nbIA = 5;
-    [SerializeField] GameObject IAPrefab = null;
+    [SerializeField, Range(0, 500)] int nbIA = 5;
+    [SerializeField] List<GameObject> IAPrefab = new List<GameObject>();
 
     List<City_IABehaviour> IABehaviours = new List<City_IABehaviour>();
 
     bool buildingsAdded = false, gameManagerInstatiate = false;
 
-    public bool IsValid => IAPrefab;
+    public bool IsValid => IAPrefab.Count > 0;
 
     private void Awake()
     {
         OnInstantiateIA += InstantiateIA;
+        Debug.Log("c'est trop nul");
         City_BuildingsManager.OnAllBuildingsAdded += () => { buildingsAdded = true; };
         City_GameManager.OnGameManagerInstantiate += () => { gameManagerInstatiate = true; };
         City_GameManager.OnUpdateSpeed += SetIASpeed;
@@ -34,7 +35,8 @@ public class City_IAManager : MonoBehaviour
         OnInstantiateIA -= InstantiateIA;
         for (int i = 0; i < nbIA; i++)
         {
-            City_IABehaviour _ia = Instantiate(IAPrefab, transform.position, transform.rotation).GetComponent<City_IABehaviour>();
+            int _randomIA = UnityEngine.Random.Range(0, IAPrefab.Count);
+            City_IABehaviour _ia = Instantiate(IAPrefab[_randomIA], transform.position, transform.rotation).GetComponent<City_IABehaviour>();
             _ia.InitBehaviour();
             _ia.transform.SetParent(transform);
             IABehaviours.Add(_ia);
@@ -44,6 +46,6 @@ public class City_IAManager : MonoBehaviour
     void SetIASpeed(float _speedCoeff)
     {
         for (int i = 0; i < IABehaviours.Count; i++)
-            IABehaviours[i].SetVelocity(_speedCoeff);
+            IABehaviours[i].Movement.SetVelocity(_speedCoeff);
     }
 }

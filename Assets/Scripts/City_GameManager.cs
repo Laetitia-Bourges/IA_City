@@ -62,11 +62,19 @@ public class City_GameManager : City_Singleton<City_GameManager>
     void SetLightColor()
     {
         if (dayHour == 4) sunColor = UnityColor.Orange;
-        if (dayHour == 7) sunColor = UnityColor.LightYellow;
-        if (dayHour == 10) sunColor = Color.white;
+        else if (dayHour == 6)
+        {
+            sunColor = UnityColor.LightYellow;
+            City_LightsManager.Instance?.SetLightStatus(false);
+        }
+        else if (dayHour == 8) sunColor = Color.white;
         else if (dayHour == 17) sunColor = UnityColor.Strawberry;
-        else if (dayHour ==18) sunColor = UnityColor.Purple;
-        else if (dayHour == 20) sunColor = UnityColor.DarkBlueDark;
+        else if (dayHour == 18) sunColor = UnityColor.Purple;
+        else if (dayHour == 20)
+        {
+            sunColor = UnityColor.DarkBlueDark;
+            City_LightsManager.Instance?.SetLightStatus(true);
+        }
     }
 
     void UpdateVelocity() => OnUpdateSpeed?.Invoke(daySpeed);
