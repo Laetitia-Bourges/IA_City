@@ -9,6 +9,7 @@ public class City_IAManager : MonoBehaviour
 
     [SerializeField, Range(0, 500)] int nbIA = 5;
     [SerializeField] List<GameObject> IAPrefab = new List<GameObject>();
+    [SerializeField] List<GameObject> IAPrefabAnimals = new List<GameObject>();
 
     List<City_IABehaviour> IABehaviours = new List<City_IABehaviour>();
 
@@ -19,7 +20,6 @@ public class City_IAManager : MonoBehaviour
     private void Awake()
     {
         OnInstantiateIA += InstantiateIA;
-        Debug.Log("c'est trop nul");
         City_BuildingsManager.OnAllBuildingsAdded += () => { buildingsAdded = true; };
         City_GameManager.OnGameManagerInstantiate += () => { gameManagerInstatiate = true; };
         City_GameManager.OnUpdateSpeed += SetIASpeed;
@@ -35,12 +35,18 @@ public class City_IAManager : MonoBehaviour
         OnInstantiateIA -= InstantiateIA;
         for (int i = 0; i < nbIA; i++)
         {
-            int _randomIA = UnityEngine.Random.Range(0, IAPrefab.Count);
-            City_IABehaviour _ia = Instantiate(IAPrefab[_randomIA], transform.position, transform.rotation).GetComponent<City_IABehaviour>();
+            City_IABehaviour _ia = Instantiate(GetObjectToInstantiate(), transform.position, transform.rotation).GetComponent<City_IABehaviour>();
             _ia.InitBehaviour();
             _ia.transform.SetParent(transform);
             IABehaviours.Add(_ia);
         }
+    }
+
+    GameObject GetObjectToInstantiate()
+    {
+        int _randomIA = UnityEngine.Random.Range(0, IAPrefab.Count + 1);
+        if (_randomIA == IAPrefab.Count) return IAPrefabAnimals[UnityEngine.Random.Range(0, IAPrefabAnimals.Count)];
+        return IAPrefab[_randomIA];
     }
 
     void SetIASpeed(float _speedCoeff)
