@@ -21,13 +21,14 @@ public class City_GameManager : City_Singleton<City_GameManager>
     protected override void Awake()
     {
         base.Awake();
-        OnGameManagerInstantiate?.Invoke();
+        //OnGameManagerInstantiate?.Invoke();
     }
     private void Start()
     {
         InvokeRepeating("UpdateTimer", 0, 1);
         InvokeRepeating("UpdateVelocity", .5f, .5f);
         sunLight.color = UnityColor.DarkBlueDark;
+        OnGameManagerInstantiate?.Invoke();
     }
     private void OnDestroy()
     {

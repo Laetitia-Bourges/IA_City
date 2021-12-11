@@ -16,6 +16,11 @@ public class City_BuildingsManager : City_Singleton<City_BuildingsManager>, IHan
     {
         base.Awake();
         nbTotalBuildings = FindObjectsOfType<City_Buildings>().Length;
+        //OnInitBuildings?.Invoke();
+    }
+
+    public void Start()
+    {
         OnInitBuildings?.Invoke();
     }
 

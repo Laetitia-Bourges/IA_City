@@ -31,6 +31,7 @@ public class City_IAManager : MonoBehaviour
 
     void InstantiateIA()
     {
+        //Debug.Log(gameManagerInstatiate);
         if (!buildingsAdded || !gameManagerInstatiate) return;
         OnInstantiateIA -= InstantiateIA;
         for (int i = 0; i < nbIA; i++)
